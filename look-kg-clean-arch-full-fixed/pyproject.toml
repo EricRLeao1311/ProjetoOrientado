@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "look-kg"
+version = "0.1.0"
+description = "Recomendação de looks com Grafo de Conhecimento (Clean Architecture)"
+authors = [{ name = "LookKG Team" }]
+requires-python = ">=3.11"
+dependencies = [
+  "fastapi==0.115.0",
+  "uvicorn[standard]==0.30.6",
+  "pydantic==2.9.2",
+  "pydantic-settings==2.4.0",
+  "networkx==3.2.1",
+  "python-multipart==0.0.9"
+]
+
+[project.optional-dependencies]
+# Ferramentas de desenvolvimento
+dev = [
+  "pytest>=8.0.0",
+  "httpx>=0.27.0",
+  "ruff>=0.6.0",
+  "mypy>=1.11.0"
+]
+# Suíte de testes + cobertura
+test = [
+  "pytest>=8.0.0",
+  "pytest-cov>=4.1.0",
+  "httpx>=0.27.0",
+  "requests>=2.32.0"
+]
+
+[tool.pytest.ini_options]
+addopts = "-q --maxfail=1 --disable-warnings --cov=. --cov-report=term-missing:skip-covered"
+testpaths = ["tests"]
+
+# (Opcional) Configs leves de lint/type-checking
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+strict_optional = true

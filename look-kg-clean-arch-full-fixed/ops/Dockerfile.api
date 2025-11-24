@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY pyproject.toml README.md /app/
+RUN pip install --no-cache-dir -e .
+COPY domain /app/domain
+COPY application /app/application
+COPY infrastructure /app/infrastructure
+COPY presentation /app/presentation
+COPY ops /app/ops
+ENV CATALOG_PATH=/app/data/catalog.json
+EXPOSE 8000
+CMD ["uvicorn", "presentation.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
