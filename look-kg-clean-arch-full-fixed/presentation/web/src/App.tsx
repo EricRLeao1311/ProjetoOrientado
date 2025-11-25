@@ -183,7 +183,7 @@ export default function App(){
 
   return (
     <div style={{maxWidth:1200, margin:"0 auto", padding:24, fontFamily:"system-ui, Arial"}}>
-      <h1>Look-KG — Teste rápido</h1>
+      <h1>Look-KG</h1>
 
       {/* Cabeçalho */}
       <div style={{display:"flex", flexWrap:"wrap", gap:12, alignItems:"center"}}>

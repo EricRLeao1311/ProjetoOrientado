@@ -8,7 +8,7 @@ CURL    := curl -sf
 .DEFAULT_GOAL := help
 
 # ---- Targets ----------
-.PHONY: help up up-ci down stop restart ps logs logs-api logs-web seed wait-api test reset down-v rebuild test-docker
+.PHONY: help up up-ci down stop restart ps logs logs-api logs-web seed wait-api test reset down-v rebuild test-docker migrate-catalog
 
 help:
 	@echo ""
@@ -17,7 +17,7 @@ help:
 	@echo "  make -f ops/Makefile up-ci     - Sobe API e roda apenas o smoke (sem Web)"
 	@echo "  make -f ops/Makefile down      - Derruba containers"
 	@echo "  make -f ops/Makefile down-v    - Derruba TUDO (⚠ apaga volumes/imagens locais)"
-	@echo "  make -f ops/Makefile seed      - Roda seed depois de wait-api"
+	@echo "  make -f ops/Makefile seed      - Roda seed depois de wait-api (usa catalog.db)"
 	@echo "  make -f ops/Makefile test      - Pytest no host"
 	@echo "  make -f ops/Makefile test-docker - Pytest dentro do container api"
 	@echo "  make -f ops/Makefile rebuild   - Chama /v1/graph/rebuild"
@@ -100,8 +100,8 @@ test:
 test-docker:
 	$(COMPOSE) exec api sh -lc "pip install -e '.[test]' && PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 pytest -q tests --maxfail=1 --disable-warnings"
 
-# Reset total: limpa volumes, sobe com smoke e semeia
-reset: down-v up wait-api seed
+# Reset total: limpa volumes, sobe com smoke, migra catálogo e semeia
+reset: down-v up wait-api migrate-catalog seed
 
 # Reconstrução das arestas
 rebuild: wait-api
